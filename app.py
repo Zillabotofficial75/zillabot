@@ -1,7 +1,32 @@
 
 import streamlit as st
 from datetime import datetime
+import websocket
+import json
 
+def get_deriv_price():
+    try:
+        ws = websocket.create_connection(
+            "wss://api.derivws.com/trading/v1/options/ws/public",
+            timeout=8
+        )
+
+        ws.send(json.dumps({
+            "ticks": "1HZ100V",
+            "req_id": 1
+        }))
+
+        response = json.loads(ws.recv())
+        ws.close()
+
+        if "tick" in response:
+            return response["tick"]["quote"]
+
+        return None
+
+    except Exception:
+        return None
+        
 st.set_page_config(
     page_title="ZILLABOT",
     page_icon="🤖",
@@ -17,6 +42,15 @@ if "trades" not in st.session_state:
 st.title("🤖 ZILLABOT")
 st.caption("SMART AUTOMATED TRADING - DEMO MODE")
 
+st.subheader("Live Deriv Market")
+
+live_price = get_deriv_price()
+
+if live_price is not None:
+    st.metric("Volatility 100 Index", live_price)
+else:
+    st.warning("Live price unavailable. Please try again.")
+    
 st.success("Demo account active. No real money is being traded.")
 
 st.metric("Demo Balance", f"${st.session_state.balance:,.2f}")
