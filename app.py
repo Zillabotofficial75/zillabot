@@ -3,7 +3,7 @@ import streamlit as st
 from datetime import datetime
 import websocket
 import json
-
+from supabase import create_client, Client
 def get_deriv_price():
     try:
         ws = websocket.create_connection(
