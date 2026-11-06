@@ -3,6 +3,7 @@ import streamlit as st
 from datetime import datetime
 import websocket
 import json
+import random
 from supabase import create_client, Client
 def get_deriv_price():
     try:
@@ -83,33 +84,60 @@ col1, col2 = st.columns(2)
 with col1:
     if st.button("🟢 BUY", use_container_width=True):
         if amount <= st.session_state.balance:
-            st.session_state.balance -= amount
+            outcome = random.choice(["WIN", "LOSS"])
+
+            if outcome == "WIN":
+                profit_loss = round(amount * 0.10, 2)
+            else:
+                profit_loss = round(-amount * 0.10, 2)
+
+            st.session_state.balance += profit_loss
+
             st.session_state.trades.append({
                 "Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                 "Pair": pair,
                 "Action": "BUY",
                 "Price": price,
-                "Amount": amount
+                "Amount": amount,
+                "P/L": profit_loss,
+                "Result": outcome
             })
-            st.success("Demo BUY recorded!")
+
+            if outcome == "WIN":
+                st.success(f"Demo BUY — WIN! Profit: ${profit_loss:.2f}")
+            else:
+                st.error(f"Demo BUY — LOSS! Loss: ${abs(profit_loss):.2f}")
         else:
             st.error("Insufficient demo balance.")
 
 with col2:
     if st.button("🔴 SELL", use_container_width=True):
         if amount <= st.session_state.balance:
-            st.session_state.balance -= amount
+            outcome = random.choice(["WIN", "LOSS"])
+
+            if outcome == "WIN":
+                profit_loss = round(amount * 0.10, 2)
+            else:
+                profit_loss = round(-amount * 0.10, 2)
+
+            st.session_state.balance += profit_loss
+
             st.session_state.trades.append({
                 "Time": datetime.now().strftime("%Y-%m-%d %H:%M"),
                 "Pair": pair,
                 "Action": "SELL",
                 "Price": price,
-                "Amount": amount
+                "Amount": amount,
+                "P/L": profit_loss,
+                "Result": outcome
             })
-            st.success("Demo SELL recorded!")
+
+            if outcome == "WIN":
+                st.success(f"Demo SELL — WIN! Profit: ${profit_loss:.2f}")
+            else:
+                st.error(f"Demo SELL — LOSS! Loss: ${abs(profit_loss):.2f}")
         else:
             st.error("Insufficient demo balance.")
-
 st.divider()
 
 st.subheader("Trading History")
