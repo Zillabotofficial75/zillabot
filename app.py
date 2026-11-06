@@ -139,7 +139,9 @@ with col2:
         else:
             st.error("Insufficient demo balance.")
 st.divider()
+total_pl = sum(trade.get("P/L", 0) for trade in st.session_state.trades)
 
+st.metric("Total P/L", f"${total_pl:.2f}")
 st.subheader("Trading History")
 
 if st.session_state.trades:
