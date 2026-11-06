@@ -78,7 +78,13 @@ amount = st.number_input(
     max_value=1000.0,
     value=10.0
 )
-
+risk_percent = st.number_input(
+    "Risk / Profit percentage (%)",
+    min_value=1.0,
+    max_value=100.0,
+    value=10.0,
+    step=1.0
+)
 col1, col2 = st.columns(2)
 
 with col1:
@@ -87,9 +93,9 @@ with col1:
             outcome = random.choice(["WIN", "LOSS"])
 
             if outcome == "WIN":
-                profit_loss = round(amount * 0.10, 2)
+            profit_loss = round(amount * (risk_percent / 100), 2)
             else:
-                profit_loss = round(-amount * 0.10, 2)
+            profit_loss = round(-amount * (risk_percent / 100), 2)
 
             st.session_state.balance += profit_loss
 
