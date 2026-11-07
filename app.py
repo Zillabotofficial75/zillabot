@@ -75,7 +75,7 @@ price = st.number_input(
 amount = st.number_input(
     "Demo trade amount ($)",
     min_value=1.0,
-    max_value=1000.0,
+    max_value=100.0,    
     value=10.0
 )
 risk_percent = st.number_input(
