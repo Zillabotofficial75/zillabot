@@ -122,9 +122,9 @@ with col2:
             outcome = random.choice(["WIN", "LOSS"])
 
             if outcome == "WIN":
-                profit_loss = round(amount * 0.10, 2)
+                profit_loss = round(amount * (risk_percent / 100), 2)
             else:
-                profit_loss = round(-amount * 0.10, 2)
+                profit_loss = round(-amount * (risk_percent / 100), 2)
 
             st.session_state.balance += profit_loss
 
