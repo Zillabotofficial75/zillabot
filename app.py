@@ -10,12 +10,7 @@ SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 if st.button("Test Supabase Connection"):
-    test = supabase.table("customers").insert({
-        "name": "Demo User",
-        "email": "demo@zillabot.com",
-        "demo_balance": 10000,
-        "status": "active"
-    }).execute()
+    test = supabase.table("customers").select("*").limit(1).execute()
 
     st.success("Supabase connection is working!")
 def get_deriv_price():
