@@ -9,7 +9,15 @@ SUPABASE_URL = st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"] 
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-
+def save_trade(pair, action, price, amount, profit_loss, result):
+    supabase.table("trades").insert({
+        "pair": pair,
+        "action": action,
+        "price": price,
+        "amount": amount,
+        "profit_loss": profit_loss,
+        "result": result
+    }).execute()
 if st.button("Test Supabase Connection"):
 
     test = supabase.table("customers").select("id").limit(1).execute()
@@ -117,7 +125,8 @@ with col1:
                 "P/L": profit_loss,
                 "Result": outcome
             })
-
+            
+save_trade(pair, "BUY", price, amount, profit_loss, outcome)
             if outcome == "WIN":
                 st.success(f"Demo BUY — WIN! Profit: ${profit_loss:.2f}")
             else:
@@ -146,7 +155,8 @@ with col2:
                 "P/L": profit_loss,
                 "Result": outcome
             })
-
+            
+save_trade(pair, "SELL", price, amount, profit_loss, outcome)
             if outcome == "WIN":
                 st.success(f"Demo SELL — WIN! Profit: ${profit_loss:.2f}")
             else:
