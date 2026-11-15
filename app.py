@@ -125,8 +125,7 @@ with col1:
                 "P/L": profit_loss,
                 "Result": outcome
             })
-            
-save_trade(pair, "BUY", price, amount, profit_loss, outcome)
+            save_trade(pair, "BUY", price, amount, profit_loss, outcome)
             if outcome == "WIN":
                 st.success(f"Demo BUY — WIN! Profit: ${profit_loss:.2f}")
             else:
@@ -155,8 +154,7 @@ with col2:
                 "P/L": profit_loss,
                 "Result": outcome
             })
-            
-save_trade(pair, "SELL", price, amount, profit_loss, outcome)
+            save_trade(pair, "SELL", price, amount, profit_loss, outcome)
             if outcome == "WIN":
                 st.success(f"Demo SELL — WIN! Profit: ${profit_loss:.2f}")
             else:
